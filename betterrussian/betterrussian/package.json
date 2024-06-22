@@ -1,19 +1,19 @@
 {
-  "main": "lib/index.js",
+  "name": "functions",
   "scripts": {
-    "start": "npm run shell",
+    "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "lint": "eslint --ext .js,.ts .",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
+    "start": "node lib/index.js",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
-  "name": "functions",
   "engines": {
     "node": "18"
   },
+  "main": "lib/index.js",
   "dependencies": {
     "@genkit-ai/ai": "^0.5.3",
     "@genkit-ai/core": "^0.5.3",
@@ -33,6 +33,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.25.4",
     "firebase-functions-test": "^3.1.0",
+    "genkit": "^0.5.3",
     "typescript": "^4.9.5"
   },
   "private": true

@@ -1,45 +1,19 @@
-import {generate} from "@genkit-ai/ai";
-import {configureGenkit} from "@genkit-ai/core";
-import {firebaseAuth} from "@genkit-ai/firebase/auth";
-import {onFlow} from "@genkit-ai/firebase/functions";
-import {geminiPro} from "@genkit-ai/googleai";
-import * as z from "zod";
-import {firebase} from "@genkit-ai/firebase";
-import {googleAI} from "@genkit-ai/googleai";
+/**
+ * Import function triggers from their respective submodules:
+ *
+ * import {onCall} from "firebase-functions/v2/https";
+ * import {onDocumentWritten} from "firebase-functions/v2/firestore";
+ *
+ * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ */
 
-configureGenkit({
-  plugins: [
-    firebase(),
-    googleAI(),
-  ],
-  logLevel: "debug",
-  enableTracingAndMetrics: true,
-});
+import {onRequest} from "firebase-functions/v2/https";
+import * as logger from "firebase-functions/logger";
 
-export const menuSuggestionFlow = onFlow(
-  {
-    name: "menuSuggestionFlow",
-    inputSchema: z.string(),
-    outputSchema: z.string(),
-    authPolicy: firebaseAuth((user) => {
-      if (!user.email_verified) {
-        throw new Error("Verified email required to run flow");
-      }
-    }),
-  },
-  async (subject) => {
-    const prompt =
-      `Suggest an item for the menu of a ${subject} themed restaurant`;
+// Start writing functions
+// https://firebase.google.com/docs/functions/typescript
 
-    const llmResponse = await generate({
-      model: geminiPro,
-      prompt: prompt,
-      config: {
-        temperature: 1,
-      },
-    });
-
-    return llmResponse.text();
-  }
-);
-
+// export const helloWorld = onRequest((request, response) => {
+//   logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
